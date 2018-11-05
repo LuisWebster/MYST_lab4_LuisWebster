@@ -135,32 +135,18 @@ for(i in 1:length(Indicador$Actual))
 }
 
 
+# Creación de un vector con fechas del indicador
+Fechas_Indicador <- as.data.frame(Indicador$DateTime)
+names(Fechas_Indicador)[1]<- "Date"
+Fechas_Indicador$Date <- as.character(substr(Fechas_Indicador$Date,1,10))
+Fechas_Indicador$Date <- as.Date(Fechas_Indicador$Date)
+Fechas_Indicador$Precio <- 0
 
-
-
-
-
-## Pruebas para descargar precios
-Fechas_Indicador$Date <- as.data.frame(Indicador$DateTime)
-Fechas_Indicador$Date <- as.character(substr(Indicador$DateTime,1,10))
-Fechas_Indicador$Date <- as.POSIXct(Fechas_Indicador$Date , format = "%m/%d/%Y %H:%M")
-View(Fechas_Indicador) 
-
-
-
-## más pruebas
-i=1
-
-if(wday(Fechas_Indicador[i]) != 1){
-  
-  Precios_Prueba <- HisPrices(AccountType = OA_At, Granularity = OA_Pr,
-                             DayAlign = OA_Da, TimeAlign = OA_Ta, Token = OA_Ak,
-                             Instrument = OA_In, 
-                             Start = F1-1, End = F1, Count = NULL)
-} else {
-  Precios_Prueba <- HisPrices(AccountType = OA_At, Granularity = OA_Pr,
-                             DayAlign = OA_Da, TimeAlign = OA_Ta, Token = OA_Ak,
-                             Instrument = OA_In, 
-                             Start = F3-2, End = F1, Count = NULL)
+# For cycle para descargar los precios y guardarlos en un subset
+for (i in 1:length(Fechas_Indicador$Date)){
+    Vector_Prueba[] <- HisPrices(AccountType = OA_At, Granularity = OA_Pr,
+                               DayAlign = OA_Da, TimeAlign = OA_Ta, Token = OA_Ak,
+                               Instrument = OA_In, 
+                               Start = Fechas_Indicador$Date[i]+1, End = Fechas_Indicador$Date[i]+2, Count = NULL)
 }
 
